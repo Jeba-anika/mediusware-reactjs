@@ -8,23 +8,38 @@ const Problem1 = () => {
         Status: ""
     })
     const [allValues, setAllValues] = useState([])
+    const [activeValues, setActiveValues] = useState([])
+    const [completedValues, setCompletedValues] = useState([])
+
+    const sortArrayByStatus = (array)=>{
+        const activeValues = array.filter(val => val.Status.toLowerCase() === 'active')
+        const completedValues = array.filter(val => val.Status.toLowerCase() === 'completed')
+        const otherValues = array.filter((val) => (val.Status.toLowerCase() !== 'completed' && val.Status.toLowerCase() !== 'active'))
+        const sortedArray = [...activeValues,...completedValues,...otherValues]
+        return sortedArray
+    }
 
     const handleFormValue = (e) => {
-        e.preventDefault()  
+        e.preventDefault()
         const temp = [...allValues]
         temp.push(formVal)
-        setAllValues(temp)
-        console.log(temp)
-        const resetFormVal={
-            Name:"",
+        const sortedArr = sortArrayByStatus(temp)
+        setAllValues(sortedArr)
+        const activeValues = temp.filter(val => val.Status.toLowerCase() === 'active')
+        setActiveValues(activeValues)
+
+        const completedValues = temp.filter(val => val.Status.toLowerCase() === 'completed')
+        setCompletedValues(completedValues)
+        const resetFormVal = {
+            Name: "",
             Status: ""
         }
         setFormVal(resetFormVal)
     }
 
     const handleClick = (val) => {
-        console.log(val)
         setShow(val);
+        console.log(val)
     }
 
     return (
@@ -36,7 +51,7 @@ const Problem1 = () => {
                     <form onSubmit={(e) => handleFormValue(e)} className="row gy-2 gx-3 align-items-center mb-4">
                         <div className="col-auto">
                             <input
-                                type="text" onChange={(e)=> {
+                                type="text" onChange={(e) => {
                                     const updatedVal = {
                                         Name: e.target.value,
                                         Status: formVal.Status
@@ -45,13 +60,13 @@ const Problem1 = () => {
                                 }} name="Name" value={formVal.Name} className="form-control" placeholder="Name" />
                         </div>
                         <div className="col-auto">
-                            <input type="text" onChange={(e)=> {
-                                    const updatedVal = {
-                                        Name: formVal.Name,
-                                        Status: e.target.value
-                                    }
-                                    setFormVal(updatedVal)
-                                }} name="Status" value={formVal.Status} className="form-control" placeholder="Status" />
+                            <input type="text" onChange={(e) => {
+                                const updatedVal = {
+                                    Name: formVal.Name,
+                                    Status: e.target.value
+                                }
+                                setFormVal(updatedVal)
+                            }} name="Status" value={formVal.Status} className="form-control" placeholder="Status" />
                         </div>
                         <div className="col-auto">
                             <button type="submit" className="btn btn-primary">Submit</button>
@@ -79,7 +94,22 @@ const Problem1 = () => {
                             </tr>
                         </thead>
                         <tbody>
-
+                            {
+                                show === 'all' ? allValues.map(val => <tr>
+                                    <td>{val.Name}</td>
+                                    <td>{val.Status}</td>
+                                </tr>)
+                                    :
+                                    show === 'active' ? activeValues.map(val => <tr>
+                                        <td>{val.Name}</td>
+                                        <td>{val.Status}</td>
+                                    </tr>)
+                                        :
+                                        completedValues.map(val => <tr>
+                                            <td>{val.Name}</td>
+                                            <td>{val.Status}</td>
+                                        </tr>)
+                            }
                         </tbody>
                     </table>
                 </div>
