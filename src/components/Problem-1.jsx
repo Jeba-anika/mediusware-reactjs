@@ -11,11 +11,11 @@ const Problem1 = () => {
     const [activeValues, setActiveValues] = useState([])
     const [completedValues, setCompletedValues] = useState([])
 
-    const sortArrayByStatus = (array)=>{
+    const sortArrayByStatus = (array) => {
         const activeValues = array.filter(val => val.Status.toLowerCase() === 'active')
         const completedValues = array.filter(val => val.Status.toLowerCase() === 'completed')
         const otherValues = array.filter((val) => (val.Status.toLowerCase() !== 'completed' && val.Status.toLowerCase() !== 'active'))
-        const sortedArray = [...activeValues,...completedValues,...otherValues]
+        const sortedArray = [...activeValues, ...completedValues, ...otherValues]
         return sortedArray
     }
 
@@ -95,17 +95,17 @@ const Problem1 = () => {
                         </thead>
                         <tbody>
                             {
-                                show === 'all' ? allValues.map(val => <tr>
+                                show === 'all' ? allValues.map((val, index) => <tr key={index}>
                                     <td>{val.Name}</td>
                                     <td>{val.Status}</td>
                                 </tr>)
                                     :
-                                    show === 'active' ? activeValues.map(val => <tr>
+                                    show === 'active' ? activeValues.map((val, index) => <tr key={index}>
                                         <td>{val.Name}</td>
                                         <td>{val.Status}</td>
                                     </tr>)
                                         :
-                                        completedValues.map(val => <tr>
+                                        completedValues.map((val, index) => <tr key={index}>
                                             <td>{val.Name}</td>
                                             <td>{val.Status}</td>
                                         </tr>)
